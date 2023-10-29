@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script type="text/JavaScript" src="xmltojson.js"></script>
+    <script type="text/JavaScript">
+        function getFilmes() {
+            let xmlHttp = new XMLHttpRequest()
+            xmlHttp.open('GET', 'http://localhost/ajax/filmes.xml')
+
+            xmlHttp.onreadystatechange = () =>  {
+                if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                    let xmlFilmes = xmlHttp.responseText
+                    console.log(xmlFilmes)
+                    //let xml = xml.responseText
+                    let parser = new DOMParser
+                    domFilmes = parser.parseFromString(xmlFilmes, 'text/xml')
+                    console.log(domFilmes)
+                    jsonFilmes = xmlToJson(domFilmes)
+                    console.log(jsonFilmes)
+
+                } else if (xmlHttp.readyState == 4 && xmlHttp.status == 404) {
+                    //
+                }
+                /*<div class="row">
+                    <div class="col">
+                        <p><strong>Título: </strong>título do filme</p>
+                        <p><strong>Resumo: </strong>Resumo do filme </p>
+                        <p><strong>Gênero: </strong>Gênero do filme</p>
+                        <p><strong>Elenco</strong>Elenco do filme</p>
+                        <p><strong>Data de lançamento</strong>Data de lançamento do filme</p>
+                        <hr>
+                    </div>
+                </div>*/
+
+            
+
+            }
+            xmlHttp.send()
+            
+            
+        }
+
+    </script>
+
+
+</head>
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container">
+            <div class="navbar-brand mb-0">
+                <h3>Catálogo filmes</h3>
+            </div>
+
+        </div>
+        
+    </nav>
+
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col">
+                <button class="btn btn-success text-end" type="button" onclick="getFilmes()">
+                    Listar filmes
+                 </button>
+            </div>
+        </div>
+
+        
+        
+    </div>
+    
+    
+</body>
+</html>
