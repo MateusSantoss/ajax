@@ -10,22 +10,23 @@
     <script type="text/JavaScript">
         function getFilmes() {
             let xmlHttp = new XMLHttpRequest()
-            xmlHttp.open('GET', 'http://localhost/ajax/filmes.xml')
+            xmlHttp.open('GET', 'http://localhost/ajax/filmes.json')
 
             xmlHttp.onreadystatechange = () =>  {
                 if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
-                    let xmlFilmes = xmlHttp.responseText
-                    console.log(xmlFilmes)
+                    let JSONFilmes = xmlHttp.responseText
+                  
+                   let objJSONFilmes = JSON.parse(JSONFilmes)
+                    console.log(objJSONFilmes)
+                    
                     //let xml = xml.responseText
-                    let parser = new DOMParser
-                    domFilmes = parser.parseFromString(xmlFilmes, 'text/xml')
-                    console.log(domFilmes)
-                    jsonFilmes = xmlToJson(domFilmes)
-                    console.log(jsonFilmes)
+                   
 
-                    for (let i in jsonFilmes['filmes']['filme']) {
-                        console.log(jsonFilmes['filmes']['filme'][i])
-                        let item = jsonFilmes['filmes']['filme'][i]
+                    for (let i in objJSONFilmes.filmes) {
+                        console.log(objJSONFilmes.filmes[i])
+
+                        let item = objJSONFilmes.filmes[i]
+
                         let divRow = document.createElement('div')
                         divRow.className = 'row'
 
@@ -33,25 +34,25 @@
                         divCol.className = 'col'
 
                         let p1 = document.createElement('p')
-                        p1.innerHTML = "<strong>Título: </strong>" +  item['titulo']['#text']
+                        p1.innerHTML = "<strong>Título: </strong>" +  item.titulo
 
                         let p2 = document.createElement('p')
-                        p2.innerHTML = "<strong>Resumo: </strong>" + item['resumo']['#text'] 
+                        p2.innerHTML = "<strong>Resumo: </strong>" + item.resumo 
 
                         let genero = ''
-                        for (let g in item.genero) {
+                        for (let g in item.generos) {
                             if (genero) genero += ', '
                         
-                            genero += item.genero[g]['#text']
+                            genero += item.generos[g].genero
                         }
                         let p3 = document.createElement('p')
                         p3.innerHTML = "<strong>Gênero: </strong>Gênero do filme: " + genero 
 
                         let elenco = ''
-                        for (let e in item.elenco.ator) {
+                        for (let e in item.elenco) {
                             if (elenco) elenco += ', '
                         
-                            elenco += item.elenco.ator[e]['#text']
+                            elenco += item.elenco[e].ator
                         }
 
 
@@ -59,7 +60,7 @@
                         p4.innerHTML = "<strong>Elenco: </strong>Elenco do filme: " + elenco
 
                         let p5 = document.createElement('p')
-                        p5.innerHTML = "<strong>Data de lançamento: </strong>Data de lançamento do filme: " + item.dataLancamento['#text'] + '(' + item.dataLancamento['@attributes']['pais'] + ')'
+                        p5.innerHTML = "<strong>Data de lançamento: </strong>Data de lançamento do filme: " + item.dataLancamento.data + '(' + item.dataLancamento.pais + ')'
 
                         let hr = document.createElement('hr')
 
@@ -78,17 +79,7 @@
                 } else if (xmlHttp.readyState == 4 && xmlHttp.status == 404) {
                     //
                 }
-                /*<div class="row">
-                    <div class="col">
-                        <p><strong>Título: </strong>título do filme</p>
-                        <p><strong>Resumo: </strong>Resumo do filme </p>
-                        <p><strong>Gênero: </strong>Gênero do filme</p>
-                        <p><strong>Elenco</strong>Elenco do filme</p>
-                        <p><strong>Data de lançamento</strong>Data de lançamento do filme</p>
-                        <hr>
-                    </div>
-                </div>*/
-
+                
             
 
             }
